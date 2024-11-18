@@ -248,7 +248,7 @@ async function loadThemeSpreadSheetConfig() {
         if (Section.length > 0) selector = `.section.${Section}`;
         if (Block.length) selector += ` .block.${Block}`;
         selector += `{
-        --${Property}, ${Value};
+        --${Property}: ${Value};
         }`;
         const sheet = window.document.styleSheets[0];
         sheet.insertRule(selector, sheet.cssRules.length);
