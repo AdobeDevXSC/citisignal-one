@@ -16,7 +16,7 @@ import {
   getMetadata,
   loadScript,
   toCamelCase,
-  toClassName
+  toClassName,
 } from './aem.js';
 import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
 import initializeDropins from './dropins.js';
@@ -231,6 +231,19 @@ function preloadFile(href, as) {
   document.head.appendChild(link);
 }
 
+async function loadThemeSpreadSheetConfig() {
+  const theme = getMetadata('theme') || 'default';
+  const resp = await fetch(`/themes/${theme}.json?offset=0&limit=500`);
+  if (resp.status === 200) {
+    const json = await resp.json();
+    const tokens = json.data || json.default.data;
+    const root = document.querySelector(':root');
+    tokens.forEach((e) => {
+      root.style.setProperty(`--${e.Property}`, `${e.Value}`);
+    });
+  }
+}
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
@@ -238,6 +251,7 @@ function preloadFile(href, as) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   await initializeDropins();
+  await loadThemeSpreadSheetConfig();
   decorateTemplateAndTheme();
 
   // Instrument experimentation plugin
