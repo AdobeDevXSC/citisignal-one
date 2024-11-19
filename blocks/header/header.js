@@ -161,6 +161,18 @@ export default async function decorate(block) {
     brandLink.closest('.button-container').className = '';
   }
 
+  const brandLogo = nav.querySelector('img')
+  if (brandLogo) {
+    const container = brandLogo.closest('p');
+    if (container) {
+      const homeLink = document.createElement('a'); 
+      homeLink.href = '/';
+      homeLink.append(brandLogo.parentElement);
+      container.nextElementSibling.remove();
+      container.replaceWith(homeLink);
+    }
+  }
+  
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
