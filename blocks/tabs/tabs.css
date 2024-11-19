@@ -4,6 +4,10 @@
   overflow-x: auto;
 }
 
+.block.tabs {
+  --background-color: transparent;
+}
+
 .tabs.block .tabs-list button {
   flex: 1;
   margin: 0;
@@ -47,8 +51,9 @@
   margin-top: -1px;
   padding: 16px 16px;
   border: 1px solid var(--border-color);
-  border-radius: 0 0 18px 18px;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
   overflow: auto;
+  background-color: var(--background-color);
 }
 
 .tabs.block .tabs-panel[aria-hidden='true'] {
