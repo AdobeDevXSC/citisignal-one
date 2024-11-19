@@ -9,6 +9,7 @@
 
 .columns > div > div {
   order: 1;
+  box-shadow: var(--box-shadow);
 }
 
 .columns > div > .columns-img-col {
