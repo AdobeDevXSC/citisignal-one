@@ -50,7 +50,7 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
-  border-radius: 18px;
+  border-radius: var(--border-radius);
 }
 
 .carousel .carousel-slide .carousel-slide-content a:any-link.button {
@@ -97,7 +97,7 @@
   background-color: rgba(0 0 0 / 50%);
   position: relative;
   width: var(--slide-content-width, auto);
-  border-radius: 18px;
+  border-radius: var(--border-radius);
 }
 
 .carousel .carousel-slide-indicators {

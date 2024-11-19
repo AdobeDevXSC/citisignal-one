@@ -12,11 +12,12 @@
  * governing permissions and limitations under the License.
  */
 
- :root {
+:root {
   --primary-color: #8821f4;
-  --secondary-color: #3C1268;
+  --secondary-color: #3c1268;
   --button-radius: 12px;
   --border-color: #eaeaea;
+  --border-radius: 18px;
 }
 
 :root,
@@ -590,7 +591,7 @@ main .section.author .default-content-wrapper {
   display: flex;
   flex-direction: row;
   gap: 2rem;
-  border-radius: 18px;
+  border-radius: var(--border-radius);
   background: #f7f7f7;
   padding: 4rem;
   align-items: center;

@@ -20,8 +20,8 @@
   line-height: 0;
 }
 
-.cards .cards-card-image img{
-  border-radius: 18px;
+.cards .cards-card-image img {
+  border-radius: var(--border-radius);
 }
 .cards .cards-card-body > *:first-child {
   margin-top: 0;

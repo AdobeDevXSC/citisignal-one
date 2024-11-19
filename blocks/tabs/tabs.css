@@ -24,11 +24,11 @@
 }
 
 .tabs.block .tabs-list button:first-of-type {
-  border-radius: 18px 0 0 0;
+  border-radius: var(--border-radius) 0 0 0;
 }
 
 .tabs.block .tabs-list button:last-of-type {
-  border-radius: 0 18px 0 0;
+  border-radius: 0 var(--border-radius) 0 0;
 }
 
 .tabs.block .tabs-list button[aria-selected='true'] {

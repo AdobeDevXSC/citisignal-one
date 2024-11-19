@@ -1,6 +1,6 @@
 .accordion {
   border: 1px solid var(--border-color);
-  border-radius: 18px;
+  border-radius: var(--border-radius);
 }
 .accordion details:first-of-type summary {
   border-top-left-radius: 18px;

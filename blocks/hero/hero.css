@@ -7,6 +7,9 @@ main .hero-container > div {
   max-width: var(--large-grid-layout);
 }
 
+.hero {
+  border-radius: var(--border-radius);
+}
 /* Hero Section Styles */
 .hero {
   position: relative;
@@ -14,7 +17,7 @@ main .hero-container > div {
   padding: 5rem 10rem;
   min-height: 725px;
   background: linear-gradient(180deg, var(--primary-color) 30%, var(--secondary-color) 100%);
-  border-radius: 18px;
+  border-radius: var(--border-radius);
   box-sizing: border-box;
   color: #fff;
   z-index: 0;
