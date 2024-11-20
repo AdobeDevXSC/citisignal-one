@@ -12,6 +12,7 @@
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
   border : var(--border-style) var(--border-width) var(--border-color);
+  background-color: var(--background-color);
 }
 
 .columns > div > .columns-img-col {
