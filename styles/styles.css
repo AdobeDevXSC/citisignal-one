@@ -18,6 +18,7 @@
   --button-radius: 12px;
   --border-color: #eaeaea;
   --border: none;
+  --border-radius: 18px;
   --box-shadow: none;
 }
 
@@ -517,10 +518,11 @@ main img {
 }
 
 /* default content inside main and columns */
+
 main .default-content-wrapper img {
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
-  border : var(--border);
+  border : var(--border-style) var(--border-width) var(--border-color);
   background-color: var(--background-color);
 }
 
