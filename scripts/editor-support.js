@@ -48,6 +48,24 @@ function setState(block, state) {
   }
 }
 
+// set the filter for an UE editable
+function setUEFilter(element, filter) {
+  element.dataset.aueFilter = filter;
+}
+
+function updateUEInstrumentation() {
+  const main = document.querySelector('main');
+
+  if (document.querySelector('body[class^=marketing]')) {
+    // use marketing specific section
+    setUEFilter(main, 'main-marketing');
+
+    // remove clutter
+    main.querySelectorAll('div.section').forEach((section) => {
+      setUEFilter(section,"section-marketing");
+    });
+  }
+}
 async function applyChanges(event) {
   // redecorate default content and blocks on patches (in the properties rail)
   const { detail } = event;
@@ -170,7 +188,11 @@ function attachEventListners(main) {
   ].forEach((eventType) => main?.addEventListener(eventType, async (event) => {
     event.stopPropagation();
     const applied = await applyChanges(event);
-    if (!applied) window.location.reload();
+    if (applied) {
+      updateUEInstrumentation();
+    } else {
+      window.location.reload();
+    }
   }));
 
   main?.addEventListener('aue:ui-select', handleSelection);
@@ -193,3 +215,4 @@ document.querySelectorAll('.block.carousel').forEach((carousel) => {
     startInterval(carousel);
   });
 });
+updateUEInstrumentation();

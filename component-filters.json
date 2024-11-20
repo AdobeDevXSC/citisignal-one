@@ -4,6 +4,32 @@
     "components": ["section"]
   },
   {
+    "id": "main-marketing",
+    "components": ["section-marketing"]
+  },
+  {
+    "id": "section-marketing",
+    "components": [
+      "text",
+      "image",
+      "button",
+      "title",
+      "hero",
+      "teaser",
+      "columns",
+      "accordion",
+      "carousel",
+      "embed",
+      "fragment",
+      "quote",
+      "table",
+      "tabs",
+      "video",
+      "icon-block",
+      "content-fragment-offer"
+    ]
+  },
+  {
     "id": "section",
     "components": [
       "text",

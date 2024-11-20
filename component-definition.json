@@ -69,6 +69,21 @@
               }
             }
           }
+        },
+        {
+          "title": "Section",
+          "id": "section-marketing",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/section/v1/section",
+                "template": {
+                  "filter": "section-marketing",
+                  "model":"section-marketing"
+                }
+              }
+            }
+          }
         }
       ]
     },
