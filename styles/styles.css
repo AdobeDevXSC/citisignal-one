@@ -259,6 +259,10 @@ h6 {
   margin: 0;
 }
 
+.section {
+  background-color: var(--background-color);
+}
+
 .section .default-content-wrapper h1::after,
 .section .default-content-wrapper h2::after,
 .section .default-content-wrapper h3::after,
@@ -294,6 +298,7 @@ h6 {
 .section.bg-secondary {
   background-color: var(--secondary-color);
 }
+
 
 .section.align-right .default-content-wrapper,
 .section.align-right .default-content-wrapper p,
