@@ -20,6 +20,12 @@
   --border: none;
   --border-radius: 18px;
   --box-shadow: none;
+
+  --col-content-padding: 10px;
+  --col-content-gap: 10px;
+  --col-content-direction: column;
+  --col-gap: 24px;
+
 }
 
 :root,

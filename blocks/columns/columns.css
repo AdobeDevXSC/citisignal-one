@@ -1,3 +1,9 @@
+.columns.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--col-gap);
+}
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -9,9 +15,15 @@
 
 .columns > div > div {
   order: 1;
+  display: flex;
+
+  flex-direction: var(--col-content-direction);
+  padding: var(--col-content-padding);
+  gap: var(--col-content-gap);
+
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);  
-  border : var(--border);
+  border: var(--border);
   background-color: var(--background-color);
 }
 
