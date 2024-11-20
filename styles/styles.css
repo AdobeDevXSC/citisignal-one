@@ -522,7 +522,7 @@ main img {
 main .default-content-wrapper img {
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
-  border : var(--border-style) var(--border-width) var(--border-color);
+  border : var(--border);
   background-color: var(--background-color);
 }
 
