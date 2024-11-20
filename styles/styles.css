@@ -20,7 +20,7 @@
   --border-width: 1px;
   --border-style: none;
   --border-radius: 18px;
-  --box-shadow: 12px 12px 12px green;
+  --box-shadow: none;
 }
 
 :root,
