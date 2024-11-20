@@ -17,9 +17,7 @@
   --secondary-color: #3c1268;
   --button-radius: 12px;
   --border-color: #eaeaea;
-  --border-width: 1px;
-  --border-style: none;
-  --border-radius: 18px;
+  --border: none;
   --box-shadow: none;
 }
 
@@ -522,7 +520,7 @@ main img {
 main .default-content-wrapper img {
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
-  border : var(--border-style) var(--border-width) var(--border-color);
+  border : var(--border);
   background-color: var(--background-color);
 }
 

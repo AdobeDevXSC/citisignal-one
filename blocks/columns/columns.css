@@ -10,8 +10,8 @@
 .columns > div > div {
   order: 1;
   box-shadow: var(--box-shadow);
-  border-radius: var(--border-radius);
-  border : var(--border-style) var(--border-width) var(--border-color);
+  border-radius: var(--border-radius);  
+  border : var(--border);
   background-color: var(--background-color);
 }
 
