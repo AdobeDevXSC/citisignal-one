@@ -17,6 +17,8 @@
   --secondary-color: #3c1268;
   --button-radius: 12px;
   --border-color: #eaeaea;
+  --border-width: 1px;
+  --border-style: none;
   --border-radius: 18px;
   --box-shadow: 12px 12px 12px green;
 }
