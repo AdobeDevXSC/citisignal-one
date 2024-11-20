@@ -214,48 +214,11 @@
     "id": "section-marketing",
     "fields": [
       {
-        "component": "multiselect",
+        "component": "text",
         "name": "style",
-        "value": "",
         "label": "Style",
         "valueType": "string",
-        "options": [
-          {
-            "name": "Alignment",
-            "children": [
-              {
-                "name": "Align center",
-                "value": "align-center"
-              },
-              {
-                "name": "Align right",
-                "value": "align-right"
-              }
-            ]
-          },
-          {
-            "name": "Background",
-            "children": [
-              {
-                "name": "BG Primary",
-                "value": "bg-primary"
-              },
-              {
-                "name": "BG Secondary",
-                "value": "bg-secondary"
-              }
-            ]
-          },
-          {
-            "name": "Width",
-            "children": [
-              {
-                "name": "Full Width",
-                "value": "full-width"
-              }
-            ]
-          }
-        ]
+        "multi": true
       }
     ]
   },
