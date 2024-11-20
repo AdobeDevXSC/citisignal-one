@@ -518,6 +518,13 @@ main img {
   height: auto;
 }
 
+main .default-content-wrapper img {
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  border : var(--border-style) var(--border-width) var(--border-color);
+  background-color: var(--background-color);
+}
+
 .icon {
   display: inline-block;
   height: 2.4rem;
