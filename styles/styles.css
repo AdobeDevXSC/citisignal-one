@@ -519,7 +519,6 @@ main img {
 }
 
 /* default content inside main and columns */
-.columns.block img,
 main .default-content-wrapper img {
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
