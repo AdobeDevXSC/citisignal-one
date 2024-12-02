@@ -286,7 +286,13 @@ function createOptimizedPicture(
   alt = '',
   eager = false,
   breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }],
-) {  
+) {
+
+  // Use createOptimizedPicture from assets plugin if available
+  if (window.hlx?.aemassets?.createOptimizedPicture) {
+    return window.hlx.aemassets.createOptimizedPicture(src, alt, eager, breakpoints);
+  }
+
   const url = new URL(src, window.location.href);
   const picture = document.createElement('picture');
   const { pathname } = url;
@@ -296,7 +302,7 @@ function createOptimizedPicture(
   breakpoints.forEach((br) => {
     const source = document.createElement('source');
     if (br.media) source.setAttribute('media', br.media);
-    source.setAttribute('type', 'image/webp');   
+    source.setAttribute('type', 'image/webp');
     source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
     //source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
     picture.appendChild(source);
@@ -571,6 +577,12 @@ function buildBlock(blockName, content) {
  * @param {Element} block The block element
  */
 async function loadBlock(block) {
+
+  // Use loadBlock from assets plugin if available
+  if (window.hlx?.aemassets?.loadBlock) {
+    return window.hlx.aemassets.loadBlock(block);
+  }
+
   const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
     block.dataset.blockStatus = 'loading';
