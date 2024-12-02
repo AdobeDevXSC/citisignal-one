@@ -1,0 +1,4 @@
+.block.secure-assets > div {
+  display: flex;
+  gap: 2rem;
+}
