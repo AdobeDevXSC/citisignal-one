@@ -196,21 +196,6 @@ function attachEventListners(main) {
 
 attachEventListners(document.querySelector('main'));
 
-// wait for all caorousels to be loaded before stopping the interval
-/*document.querySelectorAll('.carousel').forEach((carousel) => {
-
-  const observer = new MutationObserver((mutationList, observer) => {
-    for (const mutation of mutationList) {
-      if (mutation.type === "attributes" && mutation.attributeName === "data-block-status" &&
-         mutation.target.getAttribute("data-block-status") === "loaded"){
-          stopInterval(carousel);
-      }
-    }
-  });
-  observer.observe(carousel, { attributes: true, childList: false, subtree: false });
-});*/
-
-
 // when entering edit mode stop scrolling
 document.addEventListener('aue:ui-edit', () => {
   document.querySelectorAll('.block.carousel').forEach( (carousel) => {

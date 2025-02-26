@@ -1,40 +1,23 @@
 import { fetchPlaceholders } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
-const CAROUSEL_TIMER = 5000;
 
 export function startInterval(block) {
-  const interval = parseInt(block.dataset.interval, 10);
-  block.loadPercentage = 0;
-  if (interval > 0) {
-    block.dataset.intervalIdPercentage = setInterval(() => {
-      if (block.state === 'paused') return;
-      const slides = block.querySelectorAll('.carousel-slide');
-      const slideIndex = parseInt(block.dataset.activeSlide, 10);
-      const indicator = block.querySelector(
-        `.carousel-slide-indicator[data-target-slide="${slideIndex}"] > button`,
-      );
-      if (!indicator) return;
-      const percentage = (1 + block.loadPercentage) % 100;
-      block.loadPercentage = percentage;
-      indicator.style.width = `${percentage}%`;
-      block.querySelectorAll('.carousel-slide-indicator > button').forEach((ind) => {
-        if (ind != indicator) ind.style.width = '0';
-      });
-      if (percentage == 0) {
-        block.dataset.activeSlide = (parseInt(block.dataset.activeSlide, 10) + 1) % slides.length;
-        showSlide(block, block.dataset.activeSlide);
-
-        indicator.style.width = '0';
-      }
-    }, interval / 100);
+  if (block.dataset.intervalTime > 0) {
+    block.dataset.intervalId = setInterval(() => {
+      // get number of slides
+      const slides = block.querySelectorAll('.carousel-slide').length;
+      // get next active slide
+      block.dataset.activeSlide = (parseInt(block.dataset.activeSlide, 10) + 1) % slides;
+      // show it
+      showSlide(block, block.dataset.activeSlide);
+    }, block.dataset.intervalTime);
   }
 }
 
 export function stopInterval(block) {
-  if (block.dataset.intervalIdPercentage) {
-    clearInterval(block.dataset.intervalIdPercentage);
-    delete block.loadPercentage;
+  if (block.dataset.intervalId) {
+    clearInterval(block.dataset.intervalId);
     delete block.dataset.intervalId;
   }
 }
@@ -77,19 +60,25 @@ export function showSlide(block, slideIndex = 0) {
   let realSlideIndex = slideIndex < 0 ? slides.length - 1 : slideIndex;
   if (slideIndex >= slides.length) realSlideIndex = 0;
   const activeSlide = slides[realSlideIndex];
-  block.querySelectorAll('.carousel-slide-indicator > button').forEach((ind, index) => {
-    if (index != slideIndex) ind.style.width = '0';
-  });
+  if(block.dataset.intervalId) {
+    block.querySelectorAll('.carousel-slide-indicator > button').forEach((ind, index) => {
+      if (index != slideIndex) {
+        // for inactive indicators remove transition and set width to 0%
+        ind.style.width = '0%';
+        ind.style.transition = "none";
+      } else {
+        // for active indicators set transition and set width
+        ind.style.width = '100%';
+        ind.style.transition = `width ${block.dataset.intervalTime}ms linear`;
+      }
+    });
+  }
   activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
   block.querySelector('.carousel-slides').scrollTo({
     top: 0,
     left: activeSlide.offsetLeft,
     behavior: 'smooth',
   });
-  // when scroll finishes
-  setTimeout(() => {
-    block.loadPercentage = 0;
-  }, 100);
 }
 
 /**
@@ -126,13 +115,30 @@ function bindEvents(block) {
   block.querySelectorAll('.carousel-slide').forEach((slide) => {
     slideObserver.observe(slide);
   });
+
   // on hover stop interval
   block.addEventListener('mouseenter', (e) => {
-    block.state = 'paused';
+    // stop interval and set all indicators to 0%
+    stopInterval(block);
+    block.querySelectorAll('.carousel-slide-indicator > button').forEach((ind) => {
+      ind.style.width = '0%';
+      ind.style.transition = "none";
+    });
   });
+
   block.addEventListener('mouseleave', (e) => {
-    block.state = 'playing';
+    // restart interval for active indicator 
+    let activeInd = block.querySelector('.carousel-slide-indicator > button[disabled^=true]');
+    if (activeInd) {
+      activeInd.style.width = '100%';
+      activeInd.style.transition = `width ${block.dataset.intervalTime}ms linear`;
+    }
+    startInterval(block);
   });
+
+  // set transition time in CSS
+  block.style.setProperty('--transition-time', `${block.dataset.intervalTime}ms`);
+  startInterval(block);
 }
 
 function createSlide(row, slideIndex, carouselId) {
@@ -229,9 +235,7 @@ export default async function decorate(block) {
   block.prepend(container);
 
   if (!isSingleSlide) {
+    block.dataset.intervalTime =1000;
     bindEvents(block);
-
-    block.dataset.interval = `${CAROUSEL_TIMER}`;
-    startInterval(block);
   }
 }
