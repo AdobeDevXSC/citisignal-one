@@ -235,7 +235,7 @@ export default async function decorate(block) {
   block.prepend(container);
 
   if (!isSingleSlide) {
-    block.dataset.intervalTime =1000;
+    block.dataset.intervalTime = 2000;
     bindEvents(block);
   }
 }
