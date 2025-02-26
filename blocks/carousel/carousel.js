@@ -3,7 +3,7 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 
 
 export function startInterval(block) {
-  if (block.dataset.intervalTime > 0) {
+  if (block.dataset.intervalTime > 0 && !block.dataset.intervalTime) {
     block.dataset.intervalId = setInterval(() => {
       // get number of slides
       const slides = block.querySelectorAll('.carousel-slide').length;
@@ -16,9 +16,12 @@ export function startInterval(block) {
 }
 
 export function stopInterval(block) {
-  if (block.dataset.intervalId) {
-    clearInterval(block.dataset.intervalId);
-    delete block.dataset.intervalId;
+  console.log(block.dataset.intervalId);
+  const intervalId = block.dataset.intervalId;
+  // NOTE: needed to avoid concurrency issues
+  if (intervalId) {
+    clearInterval(intervalId);
+    delete block.dataset.intervalTime;
   }
 }
 
