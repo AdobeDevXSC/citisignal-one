@@ -43,6 +43,7 @@ function setState(block, state) {
   }
   if (block.matches('.carousel')) {
     block.style.display = null;
+    stopInterval(block);
     createMutation(block);
     showSlide(block, state);
   }
