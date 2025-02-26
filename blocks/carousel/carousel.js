@@ -163,7 +163,7 @@ function createSlide(row, slideIndex, carouselId) {
 let carouselId = 0;
 export default async function decorate(block) {
   // read interval time
-  let intervalTime = block.querySelector(":scope > div:first-child > div");
+  let intervalTime = block.querySelector(":scope > div:first-child");
   block.dataset.intervalTime = parseInt(intervalTime.textContent,10);
   intervalTime.remove();
 
