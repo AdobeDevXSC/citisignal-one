@@ -162,6 +162,11 @@ function createSlide(row, slideIndex, carouselId) {
 
 let carouselId = 0;
 export default async function decorate(block) {
+  // read interval time
+  let intervalTime = block.querySelector(":scope > div:first-child > div");
+  block.dataset.intervalTime = parseInt(intervalTime.textContent,10);
+  intervalTime.remove();
+
   carouselId += 1;
   block.setAttribute('id', `carousel-${carouselId}`);
   const rows = block.querySelectorAll(':scope > div');
@@ -235,7 +240,6 @@ export default async function decorate(block) {
   block.prepend(container);
 
   if (!isSingleSlide) {
-    block.dataset.intervalTime = 2000;
     bindEvents(block);
   }
 }
