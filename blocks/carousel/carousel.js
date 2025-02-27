@@ -11,7 +11,7 @@ export function stopAutoScroll(block) {
   const timeoutId = block.dataset.timeoutId;
   if (timeoutId) {
     clearTimeout(timeoutId);
-    block.dataset.timeoutId = null;
+    delete block.dataset.timeoutId;
   }
 }
 
@@ -70,7 +70,7 @@ export function showSlide(block, slideIndex = 0) {
   const activeSlide = slides[realSlideIndex];
 
   if (!activeSlide) return;
-  
+
   activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
   block.querySelector('.carousel-slides').scrollTo({
     top: 0,
