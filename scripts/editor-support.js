@@ -48,6 +48,13 @@ function setState(block, state) {
   }
 }
 
+function stopAutoScrolling() {
+  // stop autoscrolling for all carousels
+  document.querySelectorAll('.block.carousel').forEach( (carousel) => {
+    stopAutoScroll(carousel);
+  });
+}
+
 // set the filter for an UE editable
 function setUEFilter(element, filter) {
   element.dataset.aueFilter = filter;
@@ -186,6 +193,7 @@ function attachEventListners(main) {
     const applied = await applyChanges(event);
     if (applied) {
       updateUEInstrumentation();
+      stopAutoScrolling();
     } else {
       window.location.reload();
     }
@@ -200,7 +208,7 @@ attachEventListners(document.querySelector('main'));
 document.addEventListener('aue:ui-edit', () => {
   // stop autoscrolling for all carousels
   document.querySelectorAll('.block.carousel').forEach( (carousel) => {
-    stopAutoScroll(carousel);
+    setTimeout(stopAutoScroll,500,carousel);
   });
 });
 

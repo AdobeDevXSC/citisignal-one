@@ -115,8 +115,6 @@ function bindEvents(block) {
 
   // on mouseenter , cancel autoscroll
   block.addEventListener('mouseenter', (e) => {
-    // remove indicator animation
-    block.querySelector('.carousel-slide-indicator > button.animate')?.classList.remove('animate');
     // stop autoscrolling
     stopAutoScroll(block);
   });
