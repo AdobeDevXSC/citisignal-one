@@ -1,42 +1,28 @@
 import { fetchPlaceholders } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
-const CAROUSEL_TIMER = 5000;
-
-export function startInterval(block) {
-  const interval = parseInt(block.dataset.interval, 10);
-  block.loadPercentage = 0;
-  if (interval > 0) {
-    block.dataset.intervalIdPercentage = setInterval(() => {
-      if (block.state === 'paused') return;
-      const slides = block.querySelectorAll('.carousel-slide');
-      const slideIndex = parseInt(block.dataset.activeSlide, 10);
-      const indicator = block.querySelector(
-        `.carousel-slide-indicator[data-target-slide="${slideIndex}"] > button`,
-      );
-      if (!indicator) return;
-      const percentage = (1 + block.loadPercentage) % 100;
-      block.loadPercentage = percentage;
-      indicator.style.width = `${percentage}%`;
-      block.querySelectorAll('.carousel-slide-indicator > button').forEach((ind) => {
-        if (ind != indicator) ind.style.width = '0';
-      });
-      if (percentage == 0) {
-        block.dataset.activeSlide = (parseInt(block.dataset.activeSlide, 10) + 1) % slides.length;
-        showSlide(block, block.dataset.activeSlide);
-
-        indicator.style.width = '0';
-      }
-    }, interval / 100);
-  }
+export function startAutoScroll(block) {
+  block.dataset.timeoutId = setTimeout(timeout, block.dataset.timeoutMs, block);
 }
 
-export function stopInterval(block) {
-  if (block.dataset.intervalIdPercentage) {
-    clearInterval(block.dataset.intervalIdPercentage);
-    delete block.loadPercentage;
-    delete block.dataset.intervalId;
-  }
+export function stopAutoScroll(block) {
+  clearTimeout(block.dataset.timeoutId);
+}
+
+function timeout(block) {
+  // remove the id
+  delete block.dataset.timeoutId;
+  // if block is no longer in the document e.g. after a refresh/reload/edit, kick it.
+  if(!document.documentElement.contains(block)) return;
+  // get number of slides
+  const slides = block.querySelectorAll('.carousel-slide').length;
+  // get next active 
+   block.dataset.activeSlide = 
+     block.dataset.activeSlide ? (parseInt(block.dataset.activeSlide, 10) + 1) % slides : 0;
+  // show it
+  showSlide(block, block.dataset.activeSlide);
+  // start next waiting cycle
+  startAutoScroll(block);
 }
 
 function updateActiveSlide(slide) {
@@ -57,12 +43,13 @@ function updateActiveSlide(slide) {
     });
   });
 
+  // start the next indicator animation
   const indicators = block.querySelectorAll('.carousel-slide-indicator');
   indicators.forEach((indicator, idx) => {
     if (idx !== slideIndex) {
-      indicator.querySelector('button').removeAttribute('disabled');
+      indicator.querySelector('button').classList.remove('animate');
     } else {
-      indicator.querySelector('button').setAttribute('disabled', 'true');
+      indicator.querySelector('button').classList.add('animate');
     }
   });
 }
@@ -77,19 +64,15 @@ export function showSlide(block, slideIndex = 0) {
   let realSlideIndex = slideIndex < 0 ? slides.length - 1 : slideIndex;
   if (slideIndex >= slides.length) realSlideIndex = 0;
   const activeSlide = slides[realSlideIndex];
-  block.querySelectorAll('.carousel-slide-indicator > button').forEach((ind, index) => {
-    if (index != slideIndex) ind.style.width = '0';
-  });
+
+  if (!activeSlide) return;
+
   activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
   block.querySelector('.carousel-slides').scrollTo({
     top: 0,
     left: activeSlide.offsetLeft,
     behavior: 'smooth',
   });
-  // when scroll finishes
-  setTimeout(() => {
-    block.loadPercentage = 0;
-  }, 100);
 }
 
 /**
@@ -101,6 +84,7 @@ function bindEvents(block) {
   const slideIndicators = block.querySelector('.carousel-slide-indicators');
   if (!slideIndicators) return;
 
+  // click on indicator buttons scrolls slide into view
   slideIndicators.querySelectorAll('li').forEach((button) => {
     button.addEventListener('click', (e) => {
       const slideIndicator = e.currentTarget;
@@ -108,6 +92,7 @@ function bindEvents(block) {
     });
   });
 
+  // click on prev/next buttons scrolls slide into view
   block.querySelector('.slide-prev').addEventListener('click', () => {
     showSlide(block, parseInt(block.dataset.activeSlide, 10) - 1);
   });
@@ -115,6 +100,7 @@ function bindEvents(block) {
     showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
   });
 
+  // observer to update active slide once it is in view
   const slideObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -126,13 +112,21 @@ function bindEvents(block) {
   block.querySelectorAll('.carousel-slide').forEach((slide) => {
     slideObserver.observe(slide);
   });
-  // on hover stop interval
+
+  // on mouseenter , cancel autoscroll
   block.addEventListener('mouseenter', (e) => {
-    block.state = 'paused';
+    // stop autoscrolling
+    stopAutoScroll(block);
   });
+
+  // on mouseleave, restart autoscroll
   block.addEventListener('mouseleave', (e) => {
-    block.state = 'playing';
+    // restart autosrolling
+    startAutoScroll(block);
   });
+
+  // start autoscrolling
+  startAutoScroll(block);
 }
 
 function createSlide(row, slideIndex, carouselId) {
@@ -156,6 +150,15 @@ function createSlide(row, slideIndex, carouselId) {
 
 let carouselId = 0;
 export default async function decorate(block) {
+  // read interval time
+  let timeoutMs = block.querySelector(":scope > div:first-child");
+  // store info on the block
+  block.dataset.timeoutMs = parseInt(timeoutMs.textContent,10);
+  // set transition time also in CSS
+  block.style.setProperty('--transition-time', `${block.dataset.timeoutMs}ms`);
+  // remove the timeout time from the block
+  timeoutMs.remove();
+
   carouselId += 1;
   block.setAttribute('id', `carousel-${carouselId}`);
   const rows = block.querySelectorAll(':scope > div');
@@ -209,7 +212,6 @@ export default async function decorate(block) {
     if (classes && classes.length > 0) {
       slide.classList.add(...classes);
     }
-    console.log(row.querySelector(':scope > div'));
     moveInstrumentation(row, slide);
     slidesWrapper.append(slide);
 
@@ -230,8 +232,5 @@ export default async function decorate(block) {
 
   if (!isSingleSlide) {
     bindEvents(block);
-
-    block.dataset.interval = `${CAROUSEL_TIMER}`;
-    startInterval(block);
   }
 }

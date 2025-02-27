@@ -1,4 +1,4 @@
-import { showSlide, startInterval, stopInterval } from '../blocks/carousel/carousel.js';
+import { showSlide, startAutoScroll, stopAutoScroll } from '../blocks/carousel/carousel.js';
 import {
   decorateBlock,
   decorateBlocks,
@@ -48,6 +48,13 @@ function setState(block, state) {
   }
 }
 
+function stopAutoScrolling() {
+  // stop autoscrolling for all carousels
+  document.querySelectorAll('.block.carousel').forEach( (carousel) => {
+    stopAutoScroll(carousel);
+  });
+}
+
 // set the filter for an UE editable
 function setUEFilter(element, filter) {
   element.dataset.aueFilter = filter;
@@ -55,7 +62,7 @@ function setUEFilter(element, filter) {
 
 function updateUEInstrumentation() {
   const main = document.querySelector('main');
-  const template = document.head.querySelector("[name=template]").getAttribute("content");
+  const template = document.head.querySelector("[name=template]")?.getAttribute("content");
   if (template === "marketing") {
     // use marketing specific section
     setUEFilter(main, 'main-marketing');
@@ -186,6 +193,7 @@ function attachEventListners(main) {
     const applied = await applyChanges(event);
     if (applied) {
       updateUEInstrumentation();
+      stopAutoScrolling();
     } else {
       window.location.reload();
     }
@@ -196,32 +204,19 @@ function attachEventListners(main) {
 
 attachEventListners(document.querySelector('main'));
 
-// wait for all caorousels to be loaded before stopping the interval
-/*document.querySelectorAll('.carousel').forEach((carousel) => {
-
-  const observer = new MutationObserver((mutationList, observer) => {
-    for (const mutation of mutationList) {
-      if (mutation.type === "attributes" && mutation.attributeName === "data-block-status" &&
-         mutation.target.getAttribute("data-block-status") === "loaded"){
-          stopInterval(carousel);
-      }
-    }
-  });
-  observer.observe(carousel, { attributes: true, childList: false, subtree: false });
-});*/
-
-
-// when entering edit mode stop scrolling
+// when entering edit mode 
 document.addEventListener('aue:ui-edit', () => {
+  // stop autoscrolling for all carousels
   document.querySelectorAll('.block.carousel').forEach( (carousel) => {
-      stopInterval(carousel);
+    setTimeout(stopAutoScroll,500,carousel);
   });
 });
 
-// when entering preview mode start scrolling
+// when entering preview mode 
 document.addEventListener('aue:ui-preview', () => {
+  // restart autoscrolling for all carousels
   document.querySelectorAll('.block.carousel').forEach( (carousel) => {
-      startInterval(carousel);
+    startAutoScroll(carousel);
   });
 });
 
