@@ -212,7 +212,6 @@ export default async function decorate(block) {
     if (classes && classes.length > 0) {
       slide.classList.add(...classes);
     }
-    console.log(row.querySelector(':scope > div'));
     moveInstrumentation(row, slide);
     slidesWrapper.append(slide);
 
