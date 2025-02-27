@@ -3,11 +3,7 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 
 export function timeout(block) {
   // if block is no longer in the document e.g. after a refresh/reload/edit, kick it.
-  if(!document.documentElement.contains(block)) {
-    // make sure to clear timeout
-    clearTimeout(block.dataset.timeoutId);
-    return;
-  };
+  if(!document.documentElement.contains(block)) return;
   // get number of slides
   const slides = block.querySelectorAll('.carousel-slide').length;
   // get next active 
@@ -110,13 +106,13 @@ function bindEvents(block) {
     // remove indicator animation
     block.querySelector('.carousel-slide-indicator > button.animate')?.classList.remove('animate');
     // stop autoscrolling
-    clearTimeout(block.dataset.timeoutIId);
+    clearTimeout(block.dataset.timeoutId);
   });
 
   // on mouseleave, restart autoscroll
   block.addEventListener('mouseleave', (e) => {
     // restart interval for active indicator 
-    block.querySelector('.carousel-slide-indicator > button').forEach((indicator,idx) => {
+    block.querySelectorAll('.carousel-slide-indicator > button').forEach((indicator,idx) => {
       if (block.dataset.activeSlide == idx) {
         indicator.classList.add('animate');
       }
