@@ -123,12 +123,6 @@ function bindEvents(block) {
   block.addEventListener('mouseleave', (e) => {
     // restart autosrolling
     startAutoScroll(block);
-    // restart interval for active indicator 
-    block.querySelectorAll('.carousel-slide-indicator > button').forEach((indicator,idx) => {
-      if (block.dataset.activeSlide == idx) {
-        indicator.classList.add('animate');
-      }
-    });
   });
 
   // start autoscrolling
