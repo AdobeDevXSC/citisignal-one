@@ -126,14 +126,17 @@
   height: 100%;
   background-color: rgba(0 0 0 / 80%);
   width:0%;
+}
+
+.carousel .carousel-slide-indicator button.animate {
   transition: width var(--transition-time) linear;
+  width: 100%;
 }
 
 .carousel .carousel-slide-indicator button:disabled,
 .carousel .carousel-slide-indicator button:hover,
 .carousel .carousel-slide-indicator button:focus-visible {
   background-color: rgba(0 0 0 / 80%);
-  width: 100%;
 }
 
 .carousel .carousel-slide-indicator span,

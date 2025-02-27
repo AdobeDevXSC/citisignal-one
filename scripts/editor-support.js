@@ -1,4 +1,4 @@
-import { showSlide, startInterval, stopInterval } from '../blocks/carousel/carousel.js';
+import { showSlide, timeout } from '../blocks/carousel/carousel.js';
 import {
   decorateBlock,
   decorateBlocks,
@@ -43,7 +43,6 @@ function setState(block, state) {
   }
   if (block.matches('.carousel')) {
     block.style.display = null;
-    stopInterval(block);
     createMutation(block);
     showSlide(block, state);
   }
@@ -56,7 +55,7 @@ function setUEFilter(element, filter) {
 
 function updateUEInstrumentation() {
   const main = document.querySelector('main');
-  const template = document.head.querySelector("[name=template]").getAttribute("content");
+  const template = document.head.querySelector("[name=template]")?.getAttribute("content");
   if (template === "marketing") {
     // use marketing specific section
     setUEFilter(main, 'main-marketing');
@@ -197,17 +196,19 @@ function attachEventListners(main) {
 
 attachEventListners(document.querySelector('main'));
 
-// when entering edit mode stop scrolling
+// when entering edit mode 
 document.addEventListener('aue:ui-edit', () => {
+  // stop autoscrolling for all carousels
   document.querySelectorAll('.block.carousel').forEach( (carousel) => {
-      stopInterval(carousel);
+    clearTimeout(carousel.dataset.timeoutId)
   });
-});
+});I
 
-// when entering preview mode start scrolling
+// when entering preview mode 
 document.addEventListener('aue:ui-preview', () => {
+  // restart autoscrolling for all carousels
   document.querySelectorAll('.block.carousel').forEach( (carousel) => {
-      startInterval(carousel);
+    carousel.dataset.timeoutId = setTimeout(timeout,carousel.dataset.timeoutMs,carousel)
   });
 });
 
