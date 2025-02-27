@@ -12,7 +12,7 @@ export function timeout(block) {
   // show it
   showSlide(block, block.dataset.activeSlide);
   // start next waitng cycle
-  block.dataset.timeoutIId = setTimeout(timeout,block.dataset.timeoutMs,block);
+  block.dataset.timeoutId = setTimeout(timeout,block.dataset.timeoutMs,block);
 }
 
 function updateActiveSlide(slide) {
