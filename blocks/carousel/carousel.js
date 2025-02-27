@@ -111,14 +111,14 @@ function bindEvents(block) {
 
   // on mouseleave, restart autoscroll
   block.addEventListener('mouseleave', (e) => {
+    // restart autosrolling
+    block.dataset.timeoutId = setTimeout(timeout, block.dataset.timeoutMs,block);
     // restart interval for active indicator 
     block.querySelectorAll('.carousel-slide-indicator > button').forEach((indicator,idx) => {
       if (block.dataset.activeSlide == idx) {
         indicator.classList.add('animate');
       }
     });
-    // restart autosrolling
-    block.dataset.timeoutId = setTimeout(timeout, block.dataset.timeoutMs,block);
   });
 
   // start autoscrolling
