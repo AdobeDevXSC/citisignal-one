@@ -1,7 +1,21 @@
 import { fetchPlaceholders } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
-export function timeout(block) {
+export function startAutoScroll(block) {
+  if (!block.dataset.timeoutId) {
+    block.dataset.timeoutId = setTimeout(timeout, block.dataset.timeoutMs, block);
+  }
+}
+
+export function stopAutoScroll(block) {
+  const timeoutId = block.dataset.timeoutId;
+  if (timeoutId) {
+    clearTimeout(timeoutId);
+    block.dataset.timeoutId = null;
+  }
+}
+
+function timeout(block) {
   // if block is no longer in the document e.g. after a refresh/reload/edit, kick it.
   if(!document.documentElement.contains(block)) return;
   // get number of slides
@@ -11,8 +25,8 @@ export function timeout(block) {
      block.dataset.activeSlide ? (parseInt(block.dataset.activeSlide, 10) + 1) % slides : 0;
   // show it
   showSlide(block, block.dataset.activeSlide);
-  // start next waitng cycle
-  block.dataset.timeoutId = setTimeout(timeout,block.dataset.timeoutMs,block);
+  // start next waiting cycle
+  startAutoScroll(block);
 }
 
 function updateActiveSlide(slide) {
@@ -106,13 +120,13 @@ function bindEvents(block) {
     // remove indicator animation
     block.querySelector('.carousel-slide-indicator > button.animate')?.classList.remove('animate');
     // stop autoscrolling
-    clearTimeout(block.dataset.timeoutId);
+    stopAutoScroll(block);
   });
 
   // on mouseleave, restart autoscroll
   block.addEventListener('mouseleave', (e) => {
     // restart autosrolling
-    block.dataset.timeoutId = setTimeout(timeout, block.dataset.timeoutMs,block);
+    startAutoScroll(block);
     // restart interval for active indicator 
     block.querySelectorAll('.carousel-slide-indicator > button').forEach((indicator,idx) => {
       if (block.dataset.activeSlide == idx) {
@@ -122,7 +136,7 @@ function bindEvents(block) {
   });
 
   // start autoscrolling
-  block.dataset.timeoutId = setTimeout(timeout, block.dataset.timeoutMs,block);
+  startAutoScroll(block);
 }
 
 function createSlide(row, slideIndex, carouselId) {

@@ -1,4 +1,4 @@
-import { showSlide, timeout } from '../blocks/carousel/carousel.js';
+import { showSlide, startAutoScroll, stopAutoScroll } from '../blocks/carousel/carousel.js';
 import {
   decorateBlock,
   decorateBlocks,
@@ -200,7 +200,7 @@ attachEventListners(document.querySelector('main'));
 document.addEventListener('aue:ui-edit', () => {
   // stop autoscrolling for all carousels
   document.querySelectorAll('.block.carousel').forEach( (carousel) => {
-    clearTimeout(carousel.dataset.timeoutId)
+    stopAutoScroll(carousel);
   });
 });
 
@@ -208,7 +208,7 @@ document.addEventListener('aue:ui-edit', () => {
 document.addEventListener('aue:ui-preview', () => {
   // restart autoscrolling for all carousels
   document.querySelectorAll('.block.carousel').forEach( (carousel) => {
-    carousel.dataset.timeoutId = setTimeout(timeout,carousel.dataset.timeoutMs,carousel)
+    startAutoScroll(carousel);
   });
 });
 
