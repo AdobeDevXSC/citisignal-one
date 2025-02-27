@@ -202,7 +202,7 @@ document.addEventListener('aue:ui-edit', () => {
   document.querySelectorAll('.block.carousel').forEach( (carousel) => {
     clearTimeout(carousel.dataset.timeoutId)
   });
-});I
+});
 
 // when entering preview mode 
 document.addEventListener('aue:ui-preview', () => {
