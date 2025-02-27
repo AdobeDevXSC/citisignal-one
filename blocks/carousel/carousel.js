@@ -2,20 +2,16 @@ import { fetchPlaceholders } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
 export function startAutoScroll(block) {
-  if (!block.dataset.timeoutId) {
-    block.dataset.timeoutId = setTimeout(timeout, block.dataset.timeoutMs, block);
-  }
+  block.dataset.timeoutId = setTimeout(timeout, block.dataset.timeoutMs, block);
 }
 
 export function stopAutoScroll(block) {
-  const timeoutId = block.dataset.timeoutId;
-  if (timeoutId) {
-    clearTimeout(timeoutId);
-    delete block.dataset.timeoutId;
-  }
+  clearTimeout(block.dataset.timeoutId);
 }
 
 function timeout(block) {
+  // remove the id
+  delete block.dataset.timeoutId;
   // if block is no longer in the document e.g. after a refresh/reload/edit, kick it.
   if(!document.documentElement.contains(block)) return;
   // get number of slides
