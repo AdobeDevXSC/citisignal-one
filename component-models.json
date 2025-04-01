@@ -774,6 +774,19 @@
     ]
   },
   {
+    "id": "carousel",
+    "fields": [
+      {
+        "component": "number",
+        "name": "intervalTime",
+        "value": 5000,
+        "label": "Interval Time",
+        "description": "Time in milliseconds",
+        "valueType": "number"
+      }
+    ]
+  },
+  {
     "id": "carousel-item",
     "fields": [
       {
