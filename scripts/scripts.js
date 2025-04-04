@@ -20,6 +20,7 @@ import {
 } from './aem.js';
 import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
 import initializeDropins from './dropins.js';
+import assetsInit from './aem-assets-plugin-support.js';
 
 const LCP_BLOCKS = [
   'product-list-page',
@@ -578,4 +579,5 @@ async function loadPage() {
   loadDelayed();
 }
 
+await assetsInit(); // This to be done before loadPage() function invocation
 loadPage();
